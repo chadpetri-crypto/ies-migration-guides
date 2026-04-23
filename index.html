@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pre-Migration Questions by Industry</title>
+<style>
+  :root {
+    --navy: #1C2B4B;
+    --blue: #0B5394;
+    --blue-light: #1a73c8;
+    --construction: #D97706;
+    --construction-light: #FFFBEB;
+    --construction-border: #F59E0B;
+    --product: #7C3AED;
+    --product-light: #F5F3FF;
+    --product-border: #8B5CF6;
+    --nonprofit: #059669;
+    --nonprofit-light: #ECFDF5;
+    --nonprofit-border: #10B981;
+    --proserv: #DC2626;
+    --proserv-light: #FEF2F2;
+    --proserv-border: #EF4444;
+    --moves: #16A34A;
+    --moves-light: #F0FDF4;
+    --no-move: #DC2626;
+    --no-move-light: #FEF2F2;
+    --partial: #D97706;
+    --partial-light: #FFFBEB;
+    --gray-50: #F8FAFC;
+    --gray-100: #F1F5F9;
+    --gray-200: #E2E8F0;
+    --gray-500: #64748B;
+    --gray-700: #334155;
+    --gray-900: #0F172A;
+    --sidebar-w: 250px;
+    --header-h: 62px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--gray-50); color: var(--gray-900); line-height: 1.6; }
+
+  /* Header */
+  #hdr {
+    position: fixed; top: 0; left: 0; right: 0; height: var(--header-h);
+    background: var(--navy); display: flex; align-items: center; gap: 14px;
+    padding: 0 24px; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,.28);
+  }
+  #hdr .logo { font-size: 19px; font-weight: 800; color: #fff; }
+  #hdr .logo span { color: #7EC8E3; }
+  #hdr .sep { color: #475569; }
+  #hdr .sub { color: #94A3B8; font-size: 13px; }
+  #hdr .badge { margin-left: auto; background: rgba(255,255,255,.1); color: #CBD5E1; font-size: 11px; padding: 3px 10px; border-radius: 20px; }
+  #menu-btn { display: none; background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; }
+
+  /* Layout */
+  #layout { display: flex; padding-top: var(--header-h); min-height: 100vh; }
+
+  /* Sidebar */
+  #sidebar {
+    width: var(--sidebar-w); flex-shrink: 0;
+    background: var(--navy);
+    position: fixed; top: var(--header-h); left: 0; bottom: 0;
+    overflow-y: auto; padding: 16px 0 40px; z-index: 90;
+    transition: transform .3s;
+  }
+  #sidebar::-webkit-scrollbar { width: 4px; }
+  #sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); border-radius: 2px; }
+  .nav-label { font-size: 10px; font-weight: 700; letter-spacing: 1.2px; color: #475569; text-transform: uppercase; padding: 12px 16px 4px; }
+  .nav-link {
+    display: flex; align-items: center; gap: 9px;
+    padding: 9px 16px; cursor: pointer; color: #94A3B8; font-size: 13.5px;
+    transition: all .15s; border-left: 3px solid transparent; user-select: none;
+  }
+  .nav-link:hover { background: rgba(255,255,255,.06); color: #E2E8F0; }
+  .nav-link.active { background: rgba(14,116,213,.18); color: #7EC8E3; border-left-color: #7EC8E3; }
+  .nav-divider { height: 1px; background: rgba(255,255,255,.07); margin: 6px 0; }
+
+  /* Main */
+  #main { margin-left: var(--sidebar-w); flex: 1; padding: 28px 36px 80px; max-width: 1080px; }
+
+  /* Section */
+  .section { margin-bottom: 56px; scroll-margin-top: calc(var(--header-h) + 18px); }
+
+  /* Hero */
+  .hero { background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 60%, #1a73c8 100%); border-radius: 14px; padding: 40px 40px 32px; color: #fff; margin-bottom: 32px; position: relative; overflow: hidden; }
+  .hero::after { content: ''; position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: rgba(255,255,255,.04); border-radius: 50%; }
+  .hero h1 { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
+  .hero p { font-size: 14.5px; color: rgba(255,255,255,.82); max-width: 600px; line-height: 1.6; }
+  .hero-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .chip { background: rgba(255,255,255,.14); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+
+  /* Industry header band */
+  .industry-band { border-radius: 12px; padding: 18px 22px; margin-bottom: 24px; display: flex; align-items: center; gap: 14px; }
+  .industry-band h2 { font-size: 22px; font-weight: 800; }
+  .industry-band p { font-size: 13.5px; opacity: .85; margin-top: 3px; }
+  .construction-band { background: linear-gradient(135deg, #92400E, #D97706); color: #fff; }
+  .product-band { background: linear-gradient(135deg, #4C1D95, #7C3AED); color: #fff; }
+  .nonprofit-band { background: linear-gradient(135deg, #065F46, #059669); color: #fff; }
+  .proserv-band { background: linear-gradient(135deg, #7F1D1D, #DC2626); color: #fff; }
+  .band-icon { font-size: 40px; flex-shrink: 0; }
+
+  /* Section title */
+  .sec-title { font-size: 20px; font-weight: 700; color: var(--navy); margin-bottom: 4px; padding-bottom: 10px; border-bottom: 2px solid var(--gray-200); }
+  .sec-sub { font-size: 13px; color: var(--gray-500); margin-bottom: 18px; }
+  h3.sub { font-size: 16px; font-weight: 700; color: var(--blue); margin: 24px 0 12px; }
+
+  /* Question Cards */
+  .q-card { background: #fff; border: 1.5px solid var(--gray-200); border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: box-shadow .15s; }
+  .q-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.08); }
+  .q-hdr { padding: 14px 18px; cursor: pointer; display: flex; align-items: flex-start; gap: 14px; user-select: none; }
+  .q-num { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; color: #fff; flex-shrink: 0; margin-top: 1px; }
+  .q-main { flex: 1; }
+  .q-main .q-text { font-size: 14.5px; font-weight: 700; color: var(--gray-900); margin-bottom: 3px; }
+  .q-main .q-layer2 { font-size: 12.5px; color: var(--gray-500); font-style: italic; }
+  .q-chevron { color: var(--gray-500); font-size: 18px; transition: transform .2s; flex-shrink: 0; margin-top: 4px; }
+  .q-hdr.open .q-chevron { transform: rotate(180deg); }
+  .q-body { max-height: 0; overflow: hidden; transition: max-height .35s ease; border-top: 1px solid var(--gray-200); }
+  .q-body.open { max-height: 600px; }
+  .q-body-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .q-col { padding: 14px 18px; font-size: 13px; color: var(--gray-700); }
+  .q-col:first-child { border-right: 1px solid var(--gray-200); background: #FAFBFF; }
+  .q-col strong { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .8px; margin-bottom: 6px; }
+  .q-col.feat strong { color: var(--blue); }
+  .q-col.why strong { color: #D97706; }
+  .risk-tag { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-bottom: 6px; }
+  .risk-moves  { background: var(--moves-light);   color: var(--moves); }
+  .risk-no     { background: var(--no-move-light); color: var(--no-move); }
+  .risk-partial{ background: var(--partial-light); color: var(--partial); }
+
+  /* Alerts */
+  .alert { border-radius: 10px; padding: 12px 16px; margin: 14px 0; display: flex; gap: 11px; align-items: flex-start; font-size: 13px; }
+  .alert.amber { background: #FFFBEB; border-left: 4px solid #F59E0B; color: #78350F; }
+  .alert.blue  { background: #EFF6FF; border-left: 4px solid var(--blue); color: #1e3a5f; }
+  .alert.green { background: #F0FDF4; border-left: 4px solid var(--moves); color: #14532D; }
+  .alert.red   { background: #FEF2F2; border-left: 4px solid var(--no-move); color: #7F1D1D; }
+  .alert-ico { font-size: 17px; flex-shrink: 0; }
+  .alert strong { display: block; font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+
+  /* Migration status breakdown */
+  .migrate-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
+  .migrate-box { border-radius: 10px; padding: 16px; border: 1px solid; }
+  .migrate-box.moves { background: var(--moves-light); border-color: #86EFAC; }
+  .migrate-box.no    { background: var(--no-move-light); border-color: #FCA5A5; }
+  .migrate-box h4 { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+  .migrate-box.moves h4 { color: var(--moves); }
+  .migrate-box.no    h4 { color: var(--no-move); }
+  .migrate-box ul { margin: 0 0 0 16px; }
+  .migrate-box li { font-size: 13px; color: var(--gray-700); margin-bottom: 4px; }
+
+  /* Punch list */
+  .punch-list { display: flex; flex-direction: column; gap: 14px; }
+  .punch-priority { border-radius: 12px; overflow: hidden; border: 1px solid var(--gray-200); }
+  .punch-hdr { padding: 12px 16px; display: flex; align-items: center; gap: 12px; }
+  .punch-hdr .p-num { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .8px; padding: 3px 10px; border-radius: 20px; }
+  .punch-hdr h4 { font-size: 14.5px; font-weight: 700; }
+  .punch-hdr .p-owner { font-size: 12px; margin-left: auto; opacity: .75; }
+  .punch-p1 .punch-hdr { background: #FEF2F2; }
+  .punch-p1 .punch-hdr h4 { color: #991B1B; }
+  .punch-p1 .p-num { background: #DC2626; color: #fff; }
+  .punch-p2 .punch-hdr { background: #FFFBEB; }
+  .punch-p2 .punch-hdr h4 { color: #92400E; }
+  .punch-p2 .p-num { background: #D97706; color: #fff; }
+  .punch-p3 .punch-hdr { background: #EFF6FF; }
+  .punch-p3 .punch-hdr h4 { color: #1e40af; }
+  .punch-p3 .p-num { background: var(--blue); color: #fff; }
+  .punch-p4 .punch-hdr { background: #F0FDF4; }
+  .punch-p4 .punch-hdr h4 { color: #14532D; }
+  .punch-p4 .p-num { background: var(--moves); color: #fff; }
+  .punch-items { padding: 10px 16px 14px; background: #fff; display: flex; flex-direction: column; gap: 8px; }
+  .punch-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 12px; border-radius: 8px; background: var(--gray-50); border: 1px solid var(--gray-200); cursor: pointer; transition: all .15s; font-size: 13.5px; color: var(--gray-700); }
+  .punch-item:hover { background: var(--gray-100); }
+  .punch-item.done { background: var(--moves-light); border-color: #86EFAC; color: var(--gray-500); }
+  .punch-item.done .p-cb { background: var(--moves); border-color: var(--moves); color: #fff; }
+  .punch-item.done .p-txt { text-decoration: line-through; }
+  .p-cb { width: 20px; height: 20px; border-radius: 5px; border: 2px solid var(--gray-300); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; color: transparent; margin-top: 1px; transition: all .15s; }
+
+  /* Feature comparison table */
+  .feat-search { width: 100%; padding: 10px 16px; border: 1.5px solid var(--gray-200); border-radius: 8px; font-size: 14px; margin-bottom: 14px; outline: none; transition: border-color .15s; }
+  .feat-search:focus { border-color: var(--blue-light); }
+  .filter-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+  .filter-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--gray-200); background: #fff; cursor: pointer; font-size: 12.5px; font-weight: 600; color: var(--gray-700); transition: all .15s; }
+  .filter-btn:hover { border-color: var(--product-border); color: var(--product); }
+  .filter-btn.active { background: var(--product); color: #fff; border-color: var(--product); }
+  .tbl-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--gray-200); }
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  thead tr { background: var(--navy); color: #fff; }
+  thead th { padding: 11px 13px; text-align: left; font-weight: 700; white-space: nowrap; }
+  tbody tr { border-bottom: 1px solid var(--gray-100); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:nth-child(even) { background: var(--gray-50); }
+  tbody td { padding: 9px 13px; vertical-align: top; color: var(--gray-700); }
+  tbody td:first-child { font-weight: 600; color: var(--gray-900); white-space: nowrap; }
+  .t-moves { color: var(--moves); font-weight: 700; }
+  .t-no    { color: var(--no-move); font-weight: 700; }
+  .t-partial { color: var(--partial); font-weight: 700; }
+  .cat-row td { background: var(--navy) !important; color: #7EC8E3 !important; font-weight: 700 !important; font-size: 12px; letter-spacing: .6px; text-transform: uppercase; }
+
+  /* Role ownership */
+  .role-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 12px; margin-bottom: 20px; }
+  .role-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 10px; padding: 16px; }
+  .role-card h4 { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+  .role-card .hazard { font-size: 12px; color: var(--no-move); background: var(--no-move-light); border-radius: 6px; padding: 4px 10px; margin-bottom: 8px; }
+  .role-card .hazard strong { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: .6px; margin-bottom: 2px; }
+  .role-card ul { margin: 0 0 0 14px; }
+  .role-card li { font-size: 12.5px; color: var(--gray-700); margin-bottom: 3px; }
+
+  /* Resources */
+  .res-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 12px; }
+  .res-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 10px; padding: 16px; display: flex; gap: 12px; align-items: flex-start; text-decoration: none; transition: all .15s; }
+  .res-card:hover { border-color: var(--blue-light); box-shadow: 0 3px 12px rgba(0,0,0,.08); }
+  .res-icon { font-size: 22px; flex-shrink: 0; }
+  .res-title { font-size: 13.5px; font-weight: 700; color: var(--navy); margin-bottom: 2px; }
+  .res-desc { font-size: 12px; color: var(--gray-500); }
+
+  /* Disclaimer */
+  .disclaimer { background: var(--gray-100); border-left: 4px solid var(--gray-300); border-radius: 8px; padding: 12px 16px; font-size: 12.5px; color: var(--gray-500); font-style: italic; margin-top: 20px; }
+
+  /* IES Operational Upgrade Tables */
+  .ies-upgrade { margin: 24px 0 6px; }
+  .ies-upgrade-hdr { font-size: 14.5px; font-weight: 700; color: var(--navy); margin-bottom: 10px; padding: 10px 14px; background: linear-gradient(90deg, #EFF6FF, #F8FAFC); border-left: 4px solid var(--blue); border-radius: 0 8px 8px 0; display: flex; align-items: center; gap: 8px; }
+  .ies-tbl-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--gray-200); margin-bottom: 6px; }
+  .ies-tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .ies-tbl thead tr { background: var(--navy); color: #fff; }
+  .ies-tbl thead th { padding: 10px 12px; text-align: left; font-weight: 700; font-size: 11.5px; white-space: nowrap; }
+  .ies-tbl tbody tr { border-bottom: 1px solid var(--gray-100); }
+  .ies-tbl tbody tr:last-child { border-bottom: none; }
+  .ies-tbl td { padding: 9px 12px; vertical-align: top; line-height: 1.5; }
+  .ies-tbl td:first-child { font-weight: 700; color: var(--gray-900); font-size: 12.5px; min-width: 140px; }
+  .ies-tbl .from-col { background: #FFF7ED; color: #78350F; font-size: 11.5px; }
+  .ies-tbl .to-col { background: #F0FDF4; color: #14532D; font-size: 11.5px; }
+  .ies-tbl .outcome-col { color: var(--blue); font-size: 11.5px; }
+  .ies-beta { font-size: 10px; background: #DBEAFE; color: #1D4ED8; border-radius: 4px; padding: 1px 5px; font-weight: 700; vertical-align: middle; display: inline-block; margin-left: 4px; }
+  .beta-note { font-size: 11px; color: var(--gray-500); font-style: italic; padding: 6px 12px; background: #EFF6FF; border-radius: 6px; margin-bottom: 10px; }
+  .ies-sub-hdr { font-size: 12.5px; font-weight: 700; color: var(--gray-700); margin: 14px 0 8px; padding: 5px 12px; background: var(--gray-100); border-radius: 6px; }
+
+  /* Healthcare band */
+  .healthcare-band { background: linear-gradient(135deg, #1E3A5F, #065A82); color: #fff; }
+  --healthcare: #065A82;
+
+  /* Steps */
+  .steps { display: flex; flex-direction: column; }
+  .step { display: flex; margin-left: 18px; border-left: 2px solid var(--gray-200); position: relative; }
+  .step:last-child { border-left: 2px solid transparent; }
+  .step-n { position: absolute; left: -19px; top: 12px; width: 36px; height: 36px; border-radius: 50%; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; border: 3px solid var(--gray-50); }
+  .step-b { padding: 10px 14px 20px 26px; flex: 1; }
+  .step-b h4 { font-size: 14.5px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  .step-b p { font-size: 13.5px; color: var(--gray-700); }
+
+  @media(max-width:800px) {
+    #menu-btn { display: block; }
+    #sidebar { transform: translateX(-100%); }
+    #sidebar.open { transform: translateX(0); }
+    #main { margin-left: 0; padding: 16px; }
+    .q-body-inner { grid-template-columns: 1fr; }
+    .q-col:first-child { border-right: none; border-bottom: 1px solid var(--gray-200); }
+    .migrate-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div id="hdr">
+  <button id="menu-btn" onclick="toggleSidebar()">☰</button>
+  <div class="logo">Intuit <span>Migration</span></div>
+  <span class="sep">|</span>
+  <div class="sub">Pre-Migration Questions by Industry</div>
+  <div class="badge">Pre-Sales Reference</div>
+</div>
+
+<div id="layout">
+<nav id="sidebar">
+  <div class="nav-label">Overview</div>
+  <div class="nav-link active" data-s="overview" onclick="navTo('overview',this)"><span>🏠</span> Overview</div>
+  <div class="nav-divider"></div>
+  <div class="nav-label">Industries</div>
+  <div class="nav-link" data-s="construction" onclick="navTo('construction',this)"><span>👷</span> Construction</div>
+  <div class="nav-link" data-s="product" onclick="navTo('product',this)"><span>🏬</span> Product Based</div>
+  <div class="nav-link" data-s="nonprofit" onclick="navTo('nonprofit',this)"><span>🤝</span> Non-Profit</div>
+  <div class="nav-link" data-s="proserv" onclick="navTo('proserv',this)"><span>💼</span> Prof. Services</div>
+  <div class="nav-link" data-s="healthcare" onclick="navTo('healthcare',this)"><span>🏥</span> Healthcare</div>
+  <div class="nav-divider"></div>
+  <div class="nav-label">Construction Deep Dive</div>
+  <div class="nav-link" data-s="c-migrate" onclick="navTo('c-migrate',this)"><span>📦</span> What Migrates</div>
+  <div class="nav-link" data-s="c-roles" onclick="navTo('c-roles',this)"><span>👥</span> Role Ownership</div>
+  <div class="nav-link" data-s="c-day1" onclick="navTo('c-day1',this)"><span>🚀</span> Day 1 Punch List</div>
+  <div class="nav-divider"></div>
+  <div class="nav-label">Product Deep Dive</div>
+  <div class="nav-link" data-s="p-features" onclick="navTo('p-features',this)"><span>📊</span> Feature Comparison</div>
+  <div class="nav-divider"></div>
+  <div class="nav-label">Resources</div>
+  <div class="nav-link" data-s="resources" onclick="navTo('resources',this)"><span>⚡</span> Migration Resources</div>
+</nav>
+
+<main id="main">
+
+  <!-- OVERVIEW -->
+  <div id="overview" class="section">
+    <div class="hero">
+      <h1>Pre-Migration Questions by Industry</h1>
+      <p>A framework for surfacing potential migration roadblocks before Day 1. These questions help set clear customer expectations — they do not determine whether a customer should move to IES/QBOAV.</p>
+      <div class="hero-chips">
+        <span class="chip">👷 Construction</span>
+        <span class="chip">🏬 Product Based</span>
+        <span class="chip">🤝 Non-Profit</span>
+        <span class="chip">💼 Prof. Services</span>
+        <span class="chip">🏥 Healthcare</span>
+      </div>
+    </div>
+    <div class="alert blue">
+      <span class="alert-ico">💡</span>
+      <div><strong>How to Use This Guide</strong>Tailor questions tagged <em>(All Industries)</em> to each customer call. Each question includes a Layer 2 follow-up to uncover deeper dependencies. The goal is to bring potential roadblocks to the surface with clear expectations — not to disqualify the migration.</div>
+    </div>
+  </div>
+
+  <!-- CONSTRUCTION QUESTIONS -->
+  <div id="construction" class="section">
+    <div class="industry-band construction-band">
+      <div class="band-icon">👷</div>
+      <div>
+        <h2>Construction</h2>
+        <p>Pre-migration questions for QuickBooks features, migration paths, and strategic importance.</p>
+      </div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="q-card">
+      <div class="q-hdr" onclick="toggleQ(this)">
+        <div class="q-num" style="background:var(--construction)">1</div>
+        <div class="q-main">
+          <div class="q-text">Do you use QuickBooks Time or Desktop timesheets for labor costing?</div>
+          <div class="q-layer2">↳ Layer 2: Do you track billable mileage to pass on to clients?</div>
+        </div>
+        <div class="q-chevron">▾</div>
+      </div>
+      <div class="q-body">
+        <div class="q-body-inner">
+          <div class="q-col feat">
+            <strong>📋 QuickBooks Feature & Migration Details</strong>
+            <div class="risk-tag risk-no">✗ Does Not Move</div>
+            <p><strong>Timesheets & Mileage:</strong> Timesheet data, Pay Item Mappings, and settings do not move. Previous mileage data does not transfer.</p>
+          </div>
+          <div class="q-col why">
+            <strong>⚠️ Why It Matters</strong>
+            <p>Labor is often the largest construction cost. Knowing this prepares the business to manually add historical mileage and completely re-establish time-tracking connections on Day 1.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-card">
+      <div class="q-hdr" onclick="toggleQ(this)">
+        <div class="q-num" style="background:var(--construction)">2</div>
+        <div class="q-main">
+          <div class="q-text">Do you rely on Job Statuses, Start Dates, or End Dates to manage active projects?</div>
+          <div class="q-layer2">↳ Layer 2: Do you categorize projects by specific "Job Types"?</div>
+        </div>
+        <div class="q-chevron">▾</div>
+      </div>
+      <div class="q-body">
+        <div class="q-body-inner">
+          <div class="q-col feat">
+            <strong>📋 QuickBooks Feature & Migration Details</strong>
+            <div class="risk-tag risk-partial">⚠ Partially Moves</div>
+            <p><strong>Job Metadata:</strong> Jobs migrate as Projects, but metadata — Job Status, Start Date, Projected End, End Date, Job Description, and Job Type — do <strong>not</strong> move over.</p>
+          </div>
+          <div class="q-col why">
+            <strong>⚠️ Why It Matters</strong>
+            <p>Project managers will lose this metadata during the switch. They must be prepared to manually recreate these tracking details to keep project timelines accurate.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q3 Subcontractors -->
+    <div class="q-card">
+      <div class="q-hdr" onclick="toggleQ(this)">
+        <div class="q-num" style="background:var(--construction)">3</div>
+        <div class="q-main">
+          <div class="q-text">How do you manage your subcontractors?</div>
+          <div class="q-layer2">↳ Layer 2: Do you use Vendor Custom Fields to track insurance expirations or license numbers?</div>
+        </div>
+        <div class="q-chevron">▾</div>
+      </div>
+      <div class="q-body">
+        <div class="q-body-inner">
+          <div class="q-col feat">
+            <strong>📋 QuickBooks Feature & Migration Details</strong>
+            <div class="risk-tag risk-partial">⚠ Partially Moves</div>
+            <p><strong>1099 Vendors & Custom Fields:</strong> 1099 Contractors move over, but Vendor Custom Fields, Alt Contacts, and Vendor Types do <strong>not</strong> move.</p>
+          </div>
+          <div class="q-col why">
+            <strong>⚠️ Why It Matters</strong>
+            <p>Construction relies heavily on compliance. Losing subcontractor custom fields means they could accidentally hire an uninsured sub on Day 1 if they don't manually rebuild that data post-migration.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q4 AIA Billing -->
+    <div class="q-card">
+      <div class="q-hdr" onclick="toggleQ(this)">
+        <div class="q-num" style="background:var(--construction)">4</div>
+        <div class="q-main">
+          <div class="q-text">Do you need AIA-style billing?</div>
+          <div class="q-layer2">↳ Layer 2: Are you required to break your Sales Tax by line items on Estimates/Invoices?</div>
+        </div>
+        <div class="q-chevron">▾</div>
+      </div>
+      <div class="q-body">
+        <div class="q-body-inner">
+          <div class="q-col feat">
+            <strong>📋 QuickBooks Feature & Migration Details</strong>
+            <div class="risk-tag risk-no">✗ Not Available in IES Natively</div>
+            <p><strong>Sales Tax by Line Items:</strong> IES cannot display Sales Tax at the line-item level. Customers requiring this need a third-party AIA Billing application.</p>
+          </div>
+          <div class="q-col why">
+            <strong>⚠️ Why It Matters</strong>
+            <p>Construction companies break down sales tax by line item in AIA billing to apply correct tax rates to different materials and services, ensure compliance, and provide auditable cost details.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q5 Units of Measure -->
+    <div class="q-card">
+      <div class="q-hdr" onclick="toggleQ(this)">
+        <div class="q-num" style="background:var(--construction)">5</div>
+        <div class="q-main">
+          <div class="q-text">For the inventory you have, are you tracking the basic Quantity in and Quantity out?</div>
+          <div class="q-layer2">↳ Layer 2: Do you have specific Units of Measure you track (by foot, weight, etc.)?</div>
+        </div>
+        <div class="q-chevron">▾</div>
+      </div>
+      <div class="q-body">
+        <div class="q-body-inner">
+          <div class="q-col feat">
+            <strong>📋 QuickBooks Feature & Migration Details</strong>
+            <div class="risk-tag risk-no">✗ Does Not Exist Natively</div>
+            <p><strong>Multiple Units of Measure:</strong> The ability to track specific units of measure does not exist natively in the IES ecosystem without a third-party app.</p>
+          </div>
+          <div class="q-col why">
+            <strong>⚠️ Why It Matters</strong>
+            <p>Critical inventory tracking by unit of measure will convert to standard quantity in/out. Uncovering this early ensures a third-party inventory app is scoped and integrated <em>before</em> migration.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q6 Sales Tax -->
+    <div class="q-card">
+      <div class="q-hdr" onclick="toggleQ(this)">
+        <div class="q-num" style="background:var(--construction)">6</div>
+        <div class="q-main">
+          <div class="q-text">Do you pay sales tax to multiple jurisdictions or states? <span style="font-size:11px;background:#FEF3C7;color:#92400E;padding:1px 6px;border-radius:10px;margin-left:6px;">All Industries</span></div>
+          <div class="q-layer2">↳ Layer 2: How frequently do you file your sales tax payments?</div>
+        </div>
+        <div class="q-chevron">▾</div>
+      </div>
+      <div class="q-body">
+        <div class="q-body-inner">
+          <div class="q-col feat">
+            <strong>📋 QuickBooks Feature & Migration Details</strong>
+            <div class="risk-tag risk-no">✗ Migrates Incorrectly</div>
+            <p><strong>Sales Tax:</strong> Sales tax payments migrate as journal entries and often apply to the wrong filings in the online system.</p>
+          </div>
+          <div class="q-col why">
+            <strong>⚠️ Why It Matters</strong>
+            <p>To avoid compliance issues and duplicate tax payments, the accounting team must delete migrated sales tax payments and recreate them in the new Sales Tax Center.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- IES UPGRADE: CONSTRUCTION -->
+    <div class="ies-upgrade">
+      <div class="ies-upgrade-hdr">🚀 QB Desktop → IES: What Changes for Construction</div>
+      <div class="ies-tbl-wrap">
+        <table class="ies-tbl">
+          <thead>
+            <tr>
+              <th>Feature Area</th>
+              <th>📤 QB Desktop (From)</th>
+              <th>✅ IES (To)</th>
+              <th>💡 Strategic Outcome</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Job Costing</td>
+              <td class="from-col">Historical / Lagging: Reports update only after receipts and timecards are manually keyed in at the office.</td>
+              <td class="to-col">Real-Time Intelligence: Field data flows instantly to dashboards.</td>
+              <td class="outcome-col">Precision Bidding: Use actual "burdened labor" costs for future estimates.</td>
+            </tr>
+            <tr>
+              <td>Transaction & Job Templates</td>
+              <td class="from-col">Static Job Templates: Templates for jobs that have similar products/services.</td>
+              <td class="to-col">Recurring Transaction Templates: "Unscheduled" templates instantly generate a new fully detailed estimate (e.g., "Electrical Rough-In Plan B") with a single click.</td>
+              <td class="outcome-col">Sales Velocity & Standardization: Eliminates repetitive data entry. Every estimate uses approved scope and pricing structure.</td>
+            </tr>
+            <tr>
+              <td>WIP Reporting</td>
+              <td class="from-col">Static Report: Manually compiled "Estimate vs. Actuals" — often misses committed costs (POs sent but not yet billed).</td>
+              <td class="to-col">Dynamic WIP Dashboard: Tracks "Observable Progress" (Field %) vs. "Accounting Progress" (Budget Spent) to predict cost-to-complete.</td>
+              <td class="outcome-col">Margin Protection: Spot cost overruns before the project is finished.</td>
+            </tr>
+            <tr>
+              <td>AIA Billing &amp; Invoicing <span class="ies-beta">Beta</span></td>
+              <td class="from-col">Manual compilation: Schedule of Values requiring data exports and manual manipulation in Excel.</td>
+              <td class="to-col">Native AIA-style invoicing: Automatically tracks total contract value, invoiced to date, and remaining balance at the project phase level.</td>
+              <td class="outcome-col">Client Value: Transparent, professional client communications and better management of project profitability.</td>
+            </tr>
+            <tr>
+              <td>Project Budgeting &amp; Cost Tracking <span class="ies-beta">Beta</span></td>
+              <td class="from-col">Manual Progress Entry: Flat estimating and manual cost tagging.</td>
+              <td class="to-col">Milestone Automation: Projects organized by detailed Phases (e.g., Foundation, Rough-ins) and industry-standard Cost Groups (Labor, Materials, Equipment, Subcontractor).</td>
+              <td class="outcome-col">Granular budget vs. actuals: Proactively control costs, spot overruns early, and protect margins.</td>
+            </tr>
+            <tr>
+              <td>Change Orders <span class="ies-beta">Beta</span></td>
+              <td class="from-col">Workarounds: Complex offline workarounds required for scope reductions or price adjustments.</td>
+              <td class="to-col">Full native support for negative change orders — easily account for scope reductions and adjust project estimate income.</td>
+              <td class="outcome-col">Real-time profitability tracking without offline calculations or spreadsheets.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="beta-note">⚠️ Features marked Beta are subject to change or discontinuation. Features, functionality, and availability may change, and Intuit may introduce fees for such features in the future.</div>
+    </div>
+
+    <div class="disclaimer">This resource provides a framework. You may have to tailor the talk track to each customer's specific needs. These questions do not determine if the customer should move to IES/QBOAV — the purpose is to surface potential roadblocks and educate the customer with clear expectations.</div>
+  </div>
+
+  <!-- CONSTRUCTION DEEP DIVE -->
+  <div id="c-migrate" class="section">
+    <div class="sec-title">Construction: What Migrates</div>
+    <div class="sec-sub">The reality of construction data migration — automated vs. manual rebuilds.</div>
+
+    <div class="alert amber">
+      <span class="alert-ico">🏗️</span>
+      <div><strong>The Executive Reality</strong>Moving data is an active construction project. The core structure holds, but certain custom data and metadata will not survive the transfer. Identify site hazards <em>before</em> Day 1.</div>
+    </div>
+
+    <div class="migrate-grid">
+      <div class="migrate-box moves">
+        <h4>✅ Automated Migration (Crosses Safely)</h4>
+        <ul>
+          <li>Base Job Profiles (Jobs → Projects)</li>
+          <li>1099 Contractor Names</li>
+          <li>Bank Feed Logic (must be reconnected)</li>
+        </ul>
+      </div>
+      <div class="migrate-box no">
+        <h4>🔨 Day 1 Rebuild Bucket (Drops — Requires Manual Rebuild)</h4>
+        <ul>
+          <li>Custom Vendor Fields</li>
+          <li>Job Metadata (Status, Start/End Dates, Description, Type)</li>
+          <li>Historical Billable Mileage</li>
+          <li>Memorized Reports</li>
+          <li>Sales Tax Jurisdictions</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="alert green">
+      <span class="alert-ico">✅</span>
+      <div><strong>Audit Trails — Does Not Require Rebuilding</strong>Audit Trails drop during migration, but IES has Audit Trails built in — they start working automatically. Pro Tip: Run an Audit Trail report in QBDT and save as PDF/Excel for future reference.</div>
+    </div>
+
+    <h3 class="sub">A. Labor Costing & Payroll</h3>
+    <div class="alert red"><span class="alert-ico">🚨</span><div><strong>Timesheet & Pay Item Mappings Do Not Move</strong>If you use QuickBooks Time or Desktop timesheets, you must completely re-establish time-tracking connections and re-map pay items before the first payroll cycle. Previous mileage data does not transfer — manually add historical billable mileage for accurate client invoicing.</div></div>
+
+    <h3 class="sub">B. Project Timelines & Metadata</h3>
+    <div class="alert amber"><span class="alert-ico">⚠️</span><div><strong>Jobs → Projects (but Metadata is Stripped)</strong>Job Status, Start Date, Projected End Date, End Date, and Job Description/Type do not survive the transition. Project Managers must manually recreate these tracking details immediately post-migration. Use this as a strategic window to re-evaluate active projects and leverage multi-phase project architecture.</div></div>
+
+    <h3 class="sub">C. Subcontractor Compliance</h3>
+    <div class="alert red"><span class="alert-ico">🚨</span><div><strong>Custom Compliance Fields Drop — Immediate Risk</strong>If you rely on custom fields to track insurance expirations or contractor license numbers, you face an immediate risk of hiring an uninsured sub on Day 1. <strong>Vendor Custom Fields, Vendor Types, and Alternate Contacts all fall away.</strong> Compliance teams must manually rebuild these before authorizing any new site work.</div></div>
+
+    <h3 class="sub">D. Billing Clarity & Invoicing</h3>
+    <ul style="margin:0 0 14px 18px;display:flex;flex-direction:column;gap:8px;">
+      <li style="font-size:13.5px;color:var(--gray-700);"><strong>Progress Invoicing Break:</strong> Active estimates are marked Closed; Inactive become Rejected. Estimates used for progress invoicing won't link to invoices from Desktop. Customers must reactivate estimates and relink invoices.</li>
+      <li style="font-size:13.5px;color:var(--gray-700);"><strong>Custom Field Limits:</strong> "PO No" and "Sales Rep" safely move into Custom Fields. Complex custom fields (Project Manager, Contract Date) do not transfer directly.</li>
+      <li style="font-size:13.5px;color:var(--gray-700);"><strong>The Subtotal Collapse:</strong> Subtotals do not move as individual line items — they aggregate into the Description field.</li>
+    </ul>
+
+    <h3 class="sub">E. Banks & Sales Tax</h3>
+    <ul style="margin:0 0 14px 18px;display:flex;flex-direction:column;gap:8px;">
+      <li style="font-size:13.5px;color:var(--gray-700);"><strong>Bank Feeds:</strong> Automation rules remain intact, but bank feed <em>setup</em> does not move. The Primary Admin must physically reconnect all bank accounts on Day 1.</li>
+      <li style="font-size:13.5px;color:var(--gray-700);"><strong>Line Item Sales Tax:</strong> Not available in IES. If the customer needs this, they require a third-party AIA Billing application.</li>
+      <li style="font-size:13.5px;color:var(--gray-700);"><strong>Sales Tax:</strong> Migrates as raw journal entries, often applying to wrong filings. Accounting must delete migrated entries and recreate them in the Sales Tax Center.</li>
+    </ul>
+
+    <h3 class="sub">F. Historical Reporting</h3>
+    <div class="alert red"><span class="alert-ico">🚨</span><div><strong>Historical Reports & Reconciliation Reports Do Not Move</strong>Before initiating migration, export and save all past reconciliation reports as PDFs. Any customized reporting packages (monthly client/departmental/project financials) must be entirely rebuilt from scratch.</div></div>
+  </div>
+
+  <!-- ROLE OWNERSHIP -->
+  <div id="c-roles" class="section">
+    <div class="sec-title">Construction: Operational Risk Map</div>
+    <div class="sec-sub">Rebuild effort must be allocated by role to ensure a smooth transition.</div>
+    <div class="role-grid">
+      <div class="role-card">
+        <h4>📐 Project Managers</h4>
+        <div class="hazard"><strong>Hazard</strong>Job metadata dropped</div>
+        <ul>
+          <li>Rebuild Project Start/End dates</li>
+          <li>Rebuild Job Statuses and Job Types</li>
+          <li>Rebuild phased invoice templates</li>
+        </ul>
+      </div>
+      <div class="role-card">
+        <h4>📊 Accounting / Finance</h4>
+        <div class="hazard"><strong>Hazard</strong>Bank connections broken, sales tax misapplied, reports lost</div>
+        <ul>
+          <li>Reconnect bank feeds</li>
+          <li>Delete/recreate sales tax entries</li>
+          <li>Rebuild memorized reporting packages</li>
+          <li>Add historical billable mileage</li>
+        </ul>
+      </div>
+      <div class="role-card">
+        <h4>🛡️ Compliance / Admin</h4>
+        <div class="hazard"><strong>Hazard</strong>Subcontractor data dropped</div>
+        <ul>
+          <li>Rebuild 1099 custom fields</li>
+          <li>Re-enter insurance expirations</li>
+          <li>Re-enter license numbers</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 1 PUNCH LIST -->
+  <div id="c-day1" class="section">
+    <div class="sec-title">Construction: Day 1 Punch List</div>
+    <div class="sec-sub">Follow this strict order of operations on the first day of activation. Click items to mark complete.</div>
+
+    <div class="punch-list">
+      <div class="punch-priority punch-p1">
+        <div class="punch-hdr">
+          <span class="p-num">Priority 1</span>
+          <h4>🔌 Reconnect the Foundation</h4>
+          <span class="p-owner">Admin</span>
+        </div>
+        <div class="punch-items">
+          <div class="punch-item" onclick="togglePunch(this)">
+            <div class="p-cb">✓</div>
+            <div class="p-txt">Primary Admin reconnects all bank feeds</div>
+          </div>
+          <div class="punch-item" onclick="togglePunch(this)">
+            <div class="p-cb">✓</div>
+            <div class="p-txt">Re-establish time-tracking connections and pay item mappings</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="punch-priority punch-p2">
+        <div class="punch-hdr">
+          <span class="p-num">Priority 2</span>
+          <h4>🛡️ Secure Compliance</h4>
+          <span class="p-owner">Ops</span>
+        </div>
+        <div class="punch-items">
+          <div class="punch-item" onclick="togglePunch(this)">
+            <div class="p-cb">✓</div>
+            <div class="p-txt">Rebuild subcontractor Custom Fields (Insurance/Licenses)</div>
+          </div>
+          <div class="punch-item" onclick="togglePunch(this)">
+            <div class="p-cb">✓</div>
+            <div class="p-txt">Delete migrated sales tax journal entries and recreate them in the Sales Tax Center</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="punch-priority punch-p3">
+        <div class="punch-hdr">
+          <span class="p-num">Priority 3</span>
+          <h4>📐 Frame the Projects</h4>
+          <span class="p-owner">PMs</span>
+        </div>
+        <div class="punch-items">
+          <div class="punch-item" onclick="togglePunch(this)">
+            <div class="p-cb">✓</div>
+            <div class="p-txt">Manually add Start Dates, End Dates, and Job Statuses to all active Projects</div>
+          </div>
+          <div class="punch-item" onclick="togglePunch(this)">
+            <div class="p-cb">✓</div>
+            <div class="p-txt">Input historical billable mileage</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="punch-priority punch-p4">
+        <div class="punch-hdr">
+          <span class="p-num">Priority 4</span>
+          <h4>📊 Establish Reporting</h4>
+          <span class="p-owner">Accounting</span>
+        </div>
+        <div class="punch-items">
+          <div class="punch-item" onclick="togglePunch(this)">
+            <div class="p-cb">✓</div>
+            <div class="p-txt">Begin rebuilding memorized reports and billing templates</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCT BASED QUESTIONS -->
+  <div id="product" class="section">
+    <div class="industry-band product-band">
+      <div class="band-icon">🏬</div>
+      <div>
+        <h2>Product Based</h2>
+        <p>Pre-migration questions for inventory-heavy, wholesale, and retail businesses.</p>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-hdr" onclick="toggleQ(this)">
+        <div class="q-num" style="background:var(--product)">1</div>
+        <div class="q-main">
+          <div class="q-text">Do you have customers with multiple shipping addresses?</div>
+          <div class="q-layer2">↳ Layer 2: Do you ship to international locations?</div>
+        </div>
+        <div class="q-chevron">▾</div>
+      </div>
+      <div class="q-body">
+        <div class="q-body-inner">
+          <div class="q-col feat">
+            <strong>📋 Feature & Migration Details</strong>
+            <div class="risk-tag risk-no">✗ Only Default Transfers</div>
+            <p><strong>Multiple Shipping Addresses:</strong> Only the default Ship To address transfers. The entire address combines into the main address field, leaving City, State, and Zip blank.</p>
+          </div>
+          <div class="q-col why">
+            <strong>⚠️ Why It Matters</strong>
+            <p>Fulfilling orders to the wrong warehouse is a massive liability. Operations teams must manually rebuild alternate shipping addresses before fulfilling migrated orders.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-hdr" onclick="toggleQ(this)">
+        <div class="q-num" style="background:var(--product)">2</div>
+        <div class="q-main">
+          <div class="q-text">Do you pay sales tax to multiple jurisdictions or states? <span style="font-size:11px;background:#EDE9FE;color:#5B21B6;padding:1px 6px;border-radius:10px;margin-left:6px;">All Industries</span></div>
+          <div class="q-layer2">↳ Layer 2: How frequently do you file your sales tax payments?</div>
+        </div>
+        <div class="q-chevron">▾</div>
+      </div>
+      <div class="q-body">
+        <div class="q-body-inner">
+          <div class="q-col feat"><strong>📋 Feature & Migration Details</strong><div class="risk-tag risk-no">✗ Migrates Incorrectly</div><p>Sales tax payments migrate as journal entries and often apply to the wrong filings in the online system.</p></div>
+          <div class="q-col why"><strong>⚠️ Why It Matters</strong><p>To avoid compliance issues and duplicate tax payments, the accounting team must delete migrated sales tax payments and recreate them in the new Sales Tax Center.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-hdr" onclick="toggleQ(this)">
+        <div class="q-num" style="background:var(--product)">3</div>
+        <div class="q-main">
+          <div class="q-text">Are you utilizing Advanced Inventory workflows?</div>
+          <div class="q-layer2">↳ Layer 2: Specifically, do you use Barcode Scanning, Pick/Pack/Ship, or Serial/Lot Number tracking?</div>
+        </div>
+        <div class="q-chevron">▾</div>
+      </div>
+      <div class="q-body">
+        <div class="q-body-inner">
+          <div class="q-col feat"><strong>📋 Feature & Migration Details</strong><div class="risk-tag risk-no">✗ Requires 3rd-Party App</div><p><strong>Advanced Inventory:</strong> Barcode Scanning, Pick/Pack/Ship, and Serial/Lot/Expiration date tracking do <strong>not</strong> exist natively in the IES ecosystem without a third-party app.</p></div>
+          <div class="q-col why"><strong>⚠️ Why It Matters</strong><p>Critical warehouse workflows will halt immediately if these features are actively used. Uncovering this ensures a third-party inventory app is scoped and integrated <em>before</em> migration.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-hdr" onclick="toggleQ(this)">
+        <div class="q-num" style="background:var(--product)">4</div>
+        <div class="q-main">
+          <div class="q-text">Are you currently using Assemblies with your inventory?</div>
+          <div class="q-layer2">↳ Layer 2: Is this a function you want to continue to use?</div>
+        </div>
+        <div class="q-chevron">▾</div>
+      </div>
+      <div class="q-body">
+        <div class="q-body-inner">
+          <div class="q-col feat"><strong>📋 Feature & Migration Details</strong><div class="risk-tag risk-no">✗ Requires 3rd-Party App</div><p><strong>Assemblies:</strong> Assemblies and Sub-Assemblies do <strong>not</strong> exist natively in the IES ecosystem. Assemblies become single inventory items (not useful).</p></div>
+          <div class="q-col why"><strong>⚠️ Why It Matters</strong><p>Critical manufacturing workflows will halt immediately. Uncovering this ensures a third-party inventory app is scoped and integrated <em>before</em> migration.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-hdr" onclick="toggleQ(this)">
+        <div class="q-num" style="background:var(--product)">5</div>
+        <div class="q-main">
+          <div class="q-text">Are you tracking Quantity in and Quantity out for inventory?</div>
+          <div class="q-layer2">↳ Layer 2: Do you have specific Units of Measure (by foot, weight, etc.)?</div>
+        </div>
+        <div class="q-chevron">▾</div>
+      </div>
+      <div class="q-body">
+        <div class="q-body-inner">
+          <div class="q-col feat"><strong>📋 Feature & Migration Details</strong><div class="risk-tag risk-no">✗ Requires 3rd-Party App</div><p><strong>Multiple Units of Measure:</strong> Does not exist natively in IES. Converts to standard quantity in/out.</p></div>
+          <div class="q-col why"><strong>⚠️ Why It Matters</strong><p>Critical inventory tracking by unit of measure will be lost. A third-party inventory app must be scoped and integrated before migration.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-hdr" onclick="toggleQ(this)">
+        <div class="q-num" style="background:var(--product)">6</div>
+        <div class="q-main">
+          <div class="q-text">Do you utilize Memorized Reports or have past reconciliation reports saved? <span style="font-size:11px;background:#EDE9FE;color:#5B21B6;padding:1px 6px;border-radius:10px;margin-left:6px;">All Industries</span></div>
+          <div class="q-layer2">↳ Layer 2: Do you have past reconciliation reports saved for your records?</div>
+        </div>
+        <div class="q-chevron">▾</div>
+      </div>
+      <div class="q-body">
+        <div class="q-body-inner">
+          <div class="q-col feat"><strong>📋 Feature & Migration Details</strong><div class="risk-tag risk-no">✗ Does Not Move</div><p><strong>Memorized & Recon Reports:</strong> Memorized reports do not move. Past reconciliation reports do not move to the new system.</p></div>
+          <div class="q-col why"><strong>⚠️ Why It Matters</strong><p>The firm must rebuild their monthly reporting packages. Save past reconciliation reports externally as PDFs before the migration.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-hdr" onclick="toggleQ(this)">
+        <div class="q-num" style="background:var(--product)">7</div>
+        <div class="q-main">
+          <div class="q-text">Do you have alternate Vendors assigned to products/inventory you sell?</div>
+          <div class="q-layer2">↳ Layer 2: Do you use vendor lead time and price comparison to determine which vendor to order from?</div>
+        </div>
+        <div class="q-chevron">▾</div>
+      </div>
+      <div class="q-body">
+        <div class="q-body-inner">
+          <div class="q-col feat"><strong>📋 Feature & Migration Details</strong><div class="risk-tag risk-no">✗ Does Not Move</div><p><strong>Alternate Vendors:</strong> QB Enterprise Platinum & Diamond allows up to 4 alternate vendors per product. This feature does not carry over.</p></div>
+          <div class="q-col why"><strong>⚠️ Why It Matters</strong><p>Customers use this to determine the best vendor based on lead time and price. This workflow must be rebuilt or handled through a third-party tool in IES.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- IES UPGRADE: PRODUCT BASED -->
+    <div class="ies-upgrade">
+      <div class="ies-upgrade-hdr">🚀 QB Desktop → IES: What Changes for Retail &amp; E-Commerce</div>
+      <div class="ies-tbl-wrap">
+        <table class="ies-tbl">
+          <thead>
+            <tr>
+              <th>Feature Area</th>
+              <th>📤 QB Desktop (From)</th>
+              <th>✅ IES (To)</th>
+              <th>💡 Strategic Outcome</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Sales Sync</td>
+              <td class="from-col">Batch Connectors: Third-party apps sync sales once a day. Inventory counts lag, risking overselling.</td>
+              <td class="to-col">Unified Omnichannel: Real-time integration of sales channels. Inventory is committed across the entire portfolio as sales occur.</td>
+              <td class="outcome-col">Reliability: Prevent stockouts and overselling during high-volume periods.</td>
+            </tr>
+            <tr>
+              <td>Forecasting</td>
+              <td class="from-col">Manual Trends: Buyers guess reorder points based on historical bank feed patterns.</td>
+              <td class="to-col">AI-Driven Demand Planning: Predicts cash flow and inventory demand based on 5 years of history and seasonality.</td>
+              <td class="outcome-col">Cash Efficiency: Optimize stock levels so capital isn't tied up in slow-moving inventory.</td>
+            </tr>
+            <tr>
+              <td>Profitability by Channel</td>
+              <td class="from-col">Blended Margins: Hard to see true margins per channel (e.g., Amazon vs. Shopify) without manual tagging.</td>
+              <td class="to-col">Dimensional P&amp;L: Slice profitability by Channel Dimension to see exactly which storefront yields the highest net margin.</td>
+              <td class="outcome-col">Strategy: Double down on the most profitable sales channels.</td>
+            </tr>
+            <tr>
+              <td>Inventory Valuations</td>
+              <td class="from-col">Concern: Fear of losing valuation methods or being forced into FIFO during cloud migration.</td>
+              <td class="to-col">Full support for Moving Average Cost (MAC) valuations. Item quantities and average costs are perfectly preserved during migration.</td>
+              <td class="outcome-col">Accurate inventory valuations and COGS without forcing your finance team to rework reporting methods.</td>
+            </tr>
+            <tr>
+              <td>Receiving &amp; Order Fulfillment</td>
+              <td class="from-col">Disconnected purchase orders, receiving processes, and billing — manual reconciliation required.</td>
+              <td class="to-col">Item receipts separated from bills (partial or full receipt of goods). Enhanced Sales Orders connect directly to POs, estimates, and invoices.</td>
+              <td class="outcome-col">Inventory accuracy reflects real-time receipts — reducing accrual issues, duplicate payments, and manual reconciliation.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="ies-upgrade-hdr" style="margin-top:16px;">🚀 QB Desktop → IES: What Changes for Wholesale &amp; Distribution</div>
+      <div class="ies-tbl-wrap">
+        <table class="ies-tbl">
+          <thead>
+            <tr>
+              <th>Feature Area</th>
+              <th>📤 QB Desktop (From)</th>
+              <th>✅ IES (To)</th>
+              <th>💡 Strategic Outcome</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Scalability</td>
+              <td class="from-col">File Bloat: Large inventory lists and transaction histories slow down the system with performance lag.</td>
+              <td class="to-col">Cloud Scale: Architecture supports high-volume transactions and unlimited entities without performance degradation.</td>
+              <td class="outcome-col">Growth: Add new product lines or warehouses without worrying about crashing the file.</td>
+            </tr>
+            <tr>
+              <td>Payables &amp; 3-Way Match</td>
+              <td class="from-col">Manual 3-Way Match: Staff manually compares Purchase Orders, Receiving Vouchers, and Vendor Bills.</td>
+              <td class="to-col">Automated Supply Chain: The Accounting AI automatically matches POs to Bills and Receipts, flagging discrepancies.</td>
+              <td class="outcome-col">Accuracy: Eliminate overpayments for goods not received.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="disclaimer">These questions do not determine if the customer should move to IES/QBOAV — the purpose is to surface potential roadblocks and set clear expectations.</div>
+  </div>
+
+  <!-- PRODUCT FEATURE TABLE -->
+  <div id="p-features" class="section">
+    <div class="sec-title">Product Based: Feature Comparison Table</div>
+    <div class="sec-sub">QB Desktop Enterprise vs. IES/QBOAV — searchable feature migration status.</div>
+
+    <input class="feat-search" id="feat-search" placeholder="🔍  Search features... (e.g. Barcode, Assembly, Serial)" oninput="filterFeats()" />
+    <div class="filter-row">
+      <button class="filter-btn active" onclick="setFilter('all',this)">All Features</button>
+      <button class="filter-btn" onclick="setFilter('moves',this)">✅ Moves Over</button>
+      <button class="filter-btn" onclick="setFilter('no',this)">✗ Does Not Move</button>
+      <button class="filter-btn" onclick="setFilter('partial',this)">⚠ Workaround</button>
+    </div>
+
+    <div class="tbl-wrap">
+      <table id="feat-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>QB Desktop Enterprise Platinum/Diamond</th>
+            <th>IES / QBOAV</th>
+            <th>Migration Status</th>
+          </tr>
+        </thead>
+        <tbody id="feat-body">
+          <tr class="cat-row"><td colspan="4">Sales / Receivables</td></tr>
+          <tr data-status="partial"><td>Sales Orders / Customer Backorders</td><td>✓</td><td>✓ (limited capability)</td><td class="t-partial">⚠ Moves — Linked POs disconnect; may take extra days post-migration</td></tr>
+
+          <tr class="cat-row"><td colspan="4">Purchasing / Payables</td></tr>
+          <tr data-status="moves"><td>Create Purchase Orders</td><td>✓</td><td>✓</td><td class="t-moves">✅ Moves — Open POs won't reflect items received; must be linked to bill</td></tr>
+          <tr data-status="moves"><td>Create Drop Ship Orders</td><td>✓</td><td>✓</td><td class="t-moves">✅ Moves Over</td></tr>
+          <tr data-status="moves"><td>Partial Purchase Orders (Vendor Backorders)</td><td>✓</td><td>✓</td><td class="t-moves">✅ Moves Over</td></tr>
+          <tr data-status="partial"><td>Create Purchase Orders in Bulk</td><td>✓</td><td>Modified Workflow Only</td><td class="t-partial">⚠ Modified — Only works with same Vendor; use Products/Services screen filter</td></tr>
+          <tr data-status="no"><td>Upload Vendor Price List</td><td>✓</td><td>✗</td><td class="t-no">✗ Does Not Move</td></tr>
+          <tr data-status="no"><td>Min & Max Reorder Points with Markup %</td><td>✓</td><td>Minimum only in IES</td><td class="t-no">✗ Maximum does not move; Minimum reorder available</td></tr>
+          <tr data-status="no"><td>Compare Price across Vendors</td><td>✓</td><td>✗</td><td class="t-no">✗ Does Not Move</td></tr>
+          <tr data-status="partial"><td>Vendor Type, Alt. Contact, Alt-Ph, 1099 ID</td><td>✓</td><td>Workaround via Custom Fields</td><td class="t-partial">⚠ Workaround available using Custom Fields at vendor level</td></tr>
+
+          <tr class="cat-row"><td colspan="4">Inventory</td></tr>
+          <tr data-status="moves"><td>Create Inventory Items</td><td>✓</td><td>✓</td><td class="t-moves">✅ Moves Over</td></tr>
+          <tr data-status="moves"><td>Create Bundles / Group Items</td><td>✓</td><td>✓</td><td class="t-moves">✅ Moves — Group Items become Bundles in IES</td></tr>
+          <tr data-status="moves"><td>View Quantity on Hand</td><td>✓</td><td>✓</td><td class="t-moves">✅ Moves Over</td></tr>
+          <tr data-status="moves"><td>Create Margin / Markups</td><td>✓</td><td>✓</td><td class="t-moves">✅ Moves Over</td></tr>
+          <tr data-status="moves"><td>Integrated Shipping Manager (UPS/USPS/FedEx)</td><td>✓</td><td>✓</td><td class="t-moves">✅ Moves Over</td></tr>
+          <tr data-status="partial"><td>Maximum Reorder Point</td><td>✓</td><td>Minimum only</td><td class="t-partial">⚠ Maximum does not move; Minimum comes over to Reorder Point field</td></tr>
+          <tr data-status="no"><td>View Quantity Available to Sell</td><td>✓ (from any form)</td><td>Workaround only</td><td class="t-no">✗ Must run multiple reports to see uncommitted inventory</td></tr>
+          <tr data-status="no"><td>Multiple Shipping Addresses Per Customer</td><td>✓</td><td>✗</td><td class="t-no">✗ Does Not Move — only default address transfers</td></tr>
+          <tr data-status="no"><td>Multiple Units of Measure</td><td>✓</td><td>✗</td><td class="t-no">✗ Converts to standard Quantity only</td></tr>
+          <tr data-status="no"><td>Auto-Update Margins/Markups if Cost Changes</td><td>✓</td><td>✗</td><td class="t-no">✗ Does Not Move</td></tr>
+          <tr data-status="no"><td>Enhanced Inventory Receiving (receive now, bill later)</td><td>✓</td><td>✗</td><td class="t-no">✗ Does Not Move</td></tr>
+          <tr data-status="no"><td>Track Serial # or Lot # to an Item</td><td>✓</td><td>✗</td><td class="t-no">✗ Does Not Move</td></tr>
+          <tr data-status="partial"><td>Track Inventory in Multiple Locations</td><td>✓</td><td>Workaround via Dimensions/Classes</td><td class="t-partial">⚠ Can track location sent/received — but cannot track same Item Name by different locations</td></tr>
+          <tr data-status="no"><td>Assign Where Items Are Stored (Bins)</td><td>✓</td><td>✗</td><td class="t-no">✗ Does Not Move</td></tr>
+          <tr data-status="no"><td>Print / Scan Barcodes</td><td>✓</td><td>✗</td><td class="t-no">✗ Does Not Move</td></tr>
+          <tr data-status="no"><td>Mobile App: Pick, Pack, Receive, Cycle Count</td><td>✓</td><td>✗</td><td class="t-no">✗ Does Not Move</td></tr>
+          <tr data-status="no"><td>Landed Cost (Item + Shipping/Handling)</td><td>✓</td><td>✗</td><td class="t-no">✗ Does Not Move</td></tr>
+          <tr data-status="moves"><td>Track Inventory Valuation by FIFO Costing</td><td>✓</td><td>✓</td><td class="t-moves">✅ Moves Over</td></tr>
+          <tr data-status="partial"><td>Track Inventory Valuation by Average Costing</td><td>✓</td><td>Coming Soon</td><td class="t-partial">⚠ Will be available soon</td></tr>
+
+          <tr class="cat-row"><td colspan="4">Manufacturing</td></tr>
+          <tr data-status="no"><td>Create Bill of Materials (Assemblies)</td><td>✓</td><td>✗</td><td class="t-no">✗ Assemblies become single inventory items — not useful</td></tr>
+          <tr data-status="no"><td>Add Sub-Assembly to Bill of Materials</td><td>✓</td><td>✗</td><td class="t-no">✗ Does Not Move</td></tr>
+          <tr data-status="no"><td>Auto Build Sub-Assemblies</td><td>✓</td><td>✗</td><td class="t-no">✗ Does Not Move</td></tr>
+          <tr data-status="no"><td>Assembly Shortage Report</td><td>✓</td><td>✗</td><td class="t-no">✗ Does Not Move</td></tr>
+          <tr data-status="no"><td>Edit Bill of Materials While Building</td><td>✓</td><td>✗</td><td class="t-no">✗ Does Not Move</td></tr>
+          <tr data-status="no"><td>Find & Replace Components in Bulk</td><td>✓</td><td>✗</td><td class="t-no">✗ Does Not Move</td></tr>
+          <tr data-status="no"><td>Track Serial # or Lot # per Component</td><td>✓</td><td>✗</td><td class="t-no">✗ Does Not Move</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- NON-PROFIT -->
+  <div id="nonprofit" class="section">
+    <div class="industry-band nonprofit-band">
+      <div class="band-icon">🤝</div>
+      <div>
+        <h2>Non-Profit</h2>
+        <p>Pre-migration questions for charities, churches, and grant-funded organizations.</p>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-hdr" onclick="toggleQ(this)">
+        <div class="q-num" style="background:var(--nonprofit)">1</div>
+        <div class="q-main">
+          <div class="q-text">Does your board of directors or grant providers require strict transaction tracking?</div>
+          <div class="q-layer2">↳ Layer 2: Do you heavily rely on the Audit Trail for compliance?</div>
+        </div>
+        <div class="q-chevron">▾</div>
+      </div>
+      <div class="q-body">
+        <div class="q-body-inner">
+          <div class="q-col feat"><strong>📋 Feature & Migration Details</strong><div class="risk-tag risk-moves">✅ Moves Over</div><p><strong>Audit Trail:</strong> The Audit Trail <strong>does move</strong> over to the new system during migration.</p></div>
+          <div class="q-col why"><strong>💚 Good News</strong><p>This provides peace of mind. Non-profits need to know their historical financial transparency and fraud-prevention tracking will remain intact for future audits.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-hdr" onclick="toggleQ(this)">
+        <div class="q-num" style="background:var(--nonprofit)">2</div>
+        <div class="q-main">
+          <div class="q-text">Do you use customized templates for donor receipts or statements?</div>
+          <div class="q-layer2">↳ Layer 2: Do you use the "Customer Message" feature for specific donor thank-you notes?</div>
+        </div>
+        <div class="q-chevron">▾</div>
+      </div>
+      <div class="q-body">
+        <div class="q-body-inner">
+          <div class="q-col feat"><strong>📋 Feature & Migration Details</strong><div class="risk-tag risk-partial">⚠ Logos Only Move</div><p><strong>Custom Templates & Messages:</strong> Only logos move. Custom templates and "Customer Messages" from the profile list do <strong>not</strong> move over.</p></div>
+          <div class="q-col why"><strong>⚠️ Why It Matters</strong><p>Non-profits rely on specific donor-facing documents for tax purposes. They must plan time to rebuild these templates before their next major donation drive or year-end receipting.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-hdr" onclick="toggleQ(this)">
+        <div class="q-num" style="background:var(--nonprofit)">3</div>
+        <div class="q-main">
+          <div class="q-text">Do you have a highly customized Chart of Accounts for fund accounting?</div>
+          <div class="q-layer2">↳ Layer 2: Do you require account numbers to match specific grant requirements?</div>
+        </div>
+        <div class="q-chevron">▾</div>
+      </div>
+      <div class="q-body">
+        <div class="q-body-inner">
+          <div class="q-col feat"><strong>📋 Feature & Migration Details</strong><div class="risk-tag risk-partial">⚠ Partially Moves</div><p><strong>Chart of Accounts:</strong> Accounts move but are assigned a generic "detail type" (which may need changing). Account numbers only appear if the preference is turned back on.</p></div>
+          <div class="q-col why"><strong>⚠️ Why It Matters</strong><p>Non-profits use rigid numbering for restricted/unrestricted funds. They'll need to review newly assigned "Detail Types" and re-enable account numbers to ensure reporting matches board expectations.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-hdr" onclick="toggleQ(this)">
+        <div class="q-num" style="background:var(--nonprofit)">4</div>
+        <div class="q-main">
+          <div class="q-text">Do you pay sales tax to multiple jurisdictions or states? <span style="font-size:11px;background:#D1FAE5;color:#065F46;padding:1px 6px;border-radius:10px;margin-left:6px;">All Industries</span></div>
+          <div class="q-layer2">↳ Layer 2: How frequently do you file your sales tax payments?</div>
+        </div>
+        <div class="q-chevron">▾</div>
+      </div>
+      <div class="q-body">
+        <div class="q-body-inner">
+          <div class="q-col feat"><strong>📋 Feature & Migration Details</strong><div class="risk-tag risk-no">✗ Migrates Incorrectly</div><p>Sales tax payments migrate as journal entries and often apply to the wrong filings in the online system.</p></div>
+          <div class="q-col why"><strong>⚠️ Why It Matters</strong><p>To avoid compliance issues and duplicate tax payments, the accounting team must delete migrated sales tax payments and recreate them in the new Sales Tax Center.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-hdr" onclick="toggleQ(this)">
+        <div class="q-num" style="background:var(--nonprofit)">5</div>
+        <div class="q-main">
+          <div class="q-text">Do you utilize Memorized Reports to generate monthly financials? <span style="font-size:11px;background:#D1FAE5;color:#065F46;padding:1px 6px;border-radius:10px;margin-left:6px;">All Industries</span></div>
+          <div class="q-layer2">↳ Layer 2: Do you have past reconciliation reports saved for your records?</div>
+        </div>
+        <div class="q-chevron">▾</div>
+      </div>
+      <div class="q-body">
+        <div class="q-body-inner">
+          <div class="q-col feat"><strong>📋 Feature & Migration Details</strong><div class="risk-tag risk-no">✗ Does Not Move</div><p>Memorized reports do not move over. Past reconciliation reports do not move to the new system.</p></div>
+          <div class="q-col why"><strong>⚠️ Why It Matters</strong><p>The firm must rebuild monthly reporting packages. Save past reconciliation reports externally as PDFs before migration.</p></div>
+        </div>
+      </div>
+    </div>
+    <!-- IES UPGRADE: NON-PROFIT -->
+    <div class="ies-upgrade">
+      <div class="ies-upgrade-hdr">🚀 QB Desktop → IES: What Changes for Non-Profits</div>
+      <div class="ies-tbl-wrap">
+        <table class="ies-tbl">
+          <thead>
+            <tr>
+              <th>Feature Area</th>
+              <th>📤 QB Desktop (From)</th>
+              <th>✅ IES (To)</th>
+              <th>💡 Strategic Outcome</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Approval Workflows &amp; Compliance</td>
+              <td class="from-col">Manual routing: Bills and expenses routed to directors or grant managers via email or paper trails.</td>
+              <td class="to-col">Dimensions on Workflow Automation: Set conditions based on unique dimensions (e.g., Department, Grant, or Restriction) — approvals and reminders routed automatically.</td>
+              <td class="outcome-col">Tight control over restricted funds with detailed audit trails for compliance.</td>
+            </tr>
+            <tr>
+              <td>Fund Tracking</td>
+              <td class="from-col">Class Only: Restricted funds managed via a single "Class" list, often mixed with departments.</td>
+              <td class="to-col">Dimensional Stewardship: Use separate Dimensions for Grant, Program, Restriction, and Year on a single transaction line.</td>
+              <td class="outcome-col">Clarity: Cleanly separate "Who gave the money" (Donor) from "How we spent it" (Program) and "Which rules apply" (Grant).</td>
+            </tr>
+            <tr>
+              <td>Compliance Reporting</td>
+              <td class="from-col">Manual Compilation: Creating a "Statement of Functional Expenses" requires exporting to Excel to reformat data.</td>
+              <td class="to-col">Push-Button Compliance: Generate audit-ready reports by Grant or Fund instantly for boards and donors.</td>
+              <td class="outcome-col">Trust: Demonstrate impeccable stewardship to grantors with automated, transparent reporting.</td>
+            </tr>
+            <tr>
+              <td>Audit Prep</td>
+              <td class="from-col">Paper Chasing: Manually digging for invoices to prove grant compliance before each audit.</td>
+              <td class="to-col">Digital Audit Trail: Robust logs track every change, AI agent action, and approval workflow attached to specific funds.</td>
+              <td class="outcome-col">Efficiency: Reduce auditor field time by providing self-service digital records.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="disclaimer">These questions do not determine if the customer should move to IES/QBOAV — the purpose is to surface potential roadblocks and set clear expectations.</div>
+  </div>
+
+  <!-- PROF SERVICES -->
+  <div id="proserv" class="section">
+    <div class="industry-band proserv-band">
+      <div class="band-icon">💼</div>
+      <div>
+        <h2>Professional Services</h2>
+        <p>Pre-migration questions for legal, engineering, consulting, and service-based firms.</p>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-hdr" onclick="toggleQ(this)">
+        <div class="q-num" style="background:var(--proserv)">1</div>
+        <div class="q-main">
+          <div class="q-text">Do you use custom fields on invoices to track "Project Manager" or "Contract Date"? <span style="font-size:11px;background:#FEE2E2;color:#991B1B;padding:1px 6px;border-radius:10px;margin-left:6px;">All Industries</span></div>
+          <div class="q-layer2">↳ Layer 2: Do you rely on subtotals to break down phases of your services?</div>
+        </div>
+        <div class="q-chevron">▾</div>
+      </div>
+      <div class="q-body">
+        <div class="q-body-inner">
+          <div class="q-col feat"><strong>📋 Feature & Migration Details</strong><div class="risk-tag risk-partial">⚠ Partially Moves</div><p><strong>Invoice Fields:</strong> "PO No" and "Sales Rep" move into Custom Fields. Complex custom fields do not transfer directly. Subtotals don't move as individual line items — included in the Description field instead.</p></div>
+          <div class="q-col why"><strong>⚠️ Why It Matters</strong><p>Service firms use custom fields and subtotals for billing clarity. Sets expectations for manual template recreation and adjusting how invoice data is presented to clients.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-hdr" onclick="toggleQ(this)">
+        <div class="q-num" style="background:var(--proserv)">2</div>
+        <div class="q-main">
+          <div class="q-text">Have you spent significant time setting up Bank Feed automation? <span style="font-size:11px;background:#FEE2E2;color:#991B1B;padding:1px 6px;border-radius:10px;margin-left:6px;">All Industries</span></div>
+          <div class="q-layer2">↳ Layer 2: Do you rely on auto-recognized rules for recurring software subscriptions or expenses?</div>
+        </div>
+        <div class="q-chevron">▾</div>
+      </div>
+      <div class="q-body">
+        <div class="q-body-inner">
+          <div class="q-col feat"><strong>📋 Feature & Migration Details</strong><div class="risk-tag risk-partial">⚠ Rules Move, Setup Doesn't</div><p><strong>Bank Feeds & Rules:</strong> Bank Feed <em>setup</em> does not move (must reconnect). Banking <em>rules</em> and auto-recognized rules for Express/Advanced mode <strong>do move</strong>.</p></div>
+          <div class="q-col why"><strong>⚠️ Why It Matters</strong><p>Reassures the firm that their automation logic remains intact, but warns them that the Primary Admin must physically reconnect bank accounts on Day 1 to resume feeds.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-hdr" onclick="toggleQ(this)">
+        <div class="q-num" style="background:var(--proserv)">3</div>
+        <div class="q-main">
+          <div class="q-text">Do you utilize Memorized Reports to generate monthly financials? <span style="font-size:11px;background:#FEE2E2;color:#991B1B;padding:1px 6px;border-radius:10px;margin-left:6px;">All Industries</span></div>
+          <div class="q-layer2">↳ Layer 2: Do you have past reconciliation reports saved for your records?</div>
+        </div>
+        <div class="q-chevron">▾</div>
+      </div>
+      <div class="q-body">
+        <div class="q-body-inner">
+          <div class="q-col feat"><strong>📋 Feature & Migration Details</strong><div class="risk-tag risk-no">✗ Does Not Move</div><p>Memorized reports do not move. Past reconciliation reports do not move to the new system.</p></div>
+          <div class="q-col why"><strong>⚠️ Why It Matters</strong><p>The firm must rebuild monthly reporting packages. Save past reconciliation reports externally as PDFs before migration.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-hdr" onclick="toggleQ(this)">
+        <div class="q-num" style="background:var(--proserv)">4</div>
+        <div class="q-main">
+          <div class="q-text">Do you pay sales tax to multiple jurisdictions or states? <span style="font-size:11px;background:#FEE2E2;color:#991B1B;padding:1px 6px;border-radius:10px;margin-left:6px;">All Industries</span></div>
+          <div class="q-layer2">↳ Layer 2: How frequently do you file your sales tax payments?</div>
+        </div>
+        <div class="q-chevron">▾</div>
+      </div>
+      <div class="q-body">
+        <div class="q-body-inner">
+          <div class="q-col feat"><strong>📋 Feature & Migration Details</strong><div class="risk-tag risk-no">✗ Migrates Incorrectly</div><p>Sales tax payments migrate as journal entries and often apply to the wrong filings in the online system.</p></div>
+          <div class="q-col why"><strong>⚠️ Why It Matters</strong><p>To avoid compliance issues and duplicate tax payments, accounting must delete migrated sales tax payments and recreate them in the new Sales Tax Center.</p></div>
+        </div>
+      </div>
+    </div>
+    <!-- IES UPGRADE: PROF SERVICES -->
+    <div class="ies-upgrade">
+      <div class="ies-upgrade-hdr">🚀 QB Desktop → IES: What Changes for Professional Services</div>
+      <div class="ies-tbl-wrap">
+        <table class="ies-tbl">
+          <thead>
+            <tr>
+              <th>Feature Area</th>
+              <th>📤 QB Desktop (From)</th>
+              <th>✅ IES (To)</th>
+              <th>💡 Strategic Outcome</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Profitability Tracking</td>
+              <td class="from-col">Spreadsheet-Based: Manual calculation of "Realization Rates" (Revenue ÷ Billable Hours) using external data.</td>
+              <td class="to-col">Automated Economics: Real-time dashboards track utilization and realization per project, partner, or client.</td>
+              <td class="outcome-col">Client Value: Identify "scope creep" instantly by comparing unbilled hours against contract caps.</td>
+            </tr>
+            <tr>
+              <td>Invoicing &amp; Billing Triggers</td>
+              <td class="from-col">Manual Progress Entry: Billing is often a manual "Percentage of Completion" entry based on disconnected time logs.</td>
+              <td class="to-col">Milestone Automation: System triggers alerts to finance when project phases complete, prompting accurate invoicing.</td>
+              <td class="outcome-col">Revenue Velocity: Reduce the "Work-to-Cash" cycle time by automating the billing trigger.</td>
+            </tr>
+            <tr>
+              <td>User Access &amp; Roles</td>
+              <td class="from-col">All-or-Nothing: Project managers often have excessive access or none at all (relying on printed reports).</td>
+              <td class="to-col">Project Manager Role: A dedicated role allowing PMs to see project P&amp;L and approve bills without viewing payroll or bank balances.</td>
+              <td class="outcome-col">Delegation: Empower PMs to manage budgets without exposing sensitive firm financial data.</td>
+            </tr>
+            <tr>
+              <td>Operational KPIs &amp; Dashboards</td>
+              <td class="from-col">Manual consolidation: CRM pipeline and time-tracking data into offline spreadsheets to calculate metrics.</td>
+              <td class="to-col">Advanced 3rd Party integrations: Automatically pull external metrics from HubSpot, Salesforce, Clockify, and Gusto directly into custom KPIs and Management Reports.</td>
+              <td class="outcome-col">Unified, real-time performance tracking: visibility into how operational tactics impact financial results — all in one place.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="disclaimer">These questions do not determine if the customer should move to IES/QBOAV — the purpose is to surface potential roadblocks and set clear expectations.</div>
+  </div>
+
+  <!-- HEALTHCARE -->
+  <div id="healthcare" class="section">
+    <div class="industry-band healthcare-band">
+      <div class="band-icon">🏥</div>
+      <div>
+        <h2>Healthcare</h2>
+        <p>Pre-migration questions for clinics, private practices, and multi-location healthcare providers.</p>
+      </div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="q-card">
+      <div class="q-hdr" onclick="toggleQ(this)">
+        <div class="q-num" style="background:#065A82">1</div>
+        <div class="q-main">
+          <div class="q-text">Do you use a separate Practice Management Software (PMS) alongside QuickBooks?</div>
+          <div class="q-layer2">↳ Layer 2: Are month-end journal entries your primary way of recording revenue from PMS into QuickBooks?</div>
+        </div>
+        <div class="q-chevron">▾</div>
+      </div>
+      <div class="q-body">
+        <div class="q-body-inner">
+          <div class="q-col feat">
+            <strong>📋 Feature &amp; Migration Details</strong>
+            <div class="risk-tag risk-partial">⚠ Integration Must Be Rebuilt</div>
+            <p><strong>PMS Integration:</strong> Existing QuickBooks integrations with Practice Management Software do not carry over. API connections must be re-established post-migration for IES.</p>
+          </div>
+          <div class="q-col why">
+            <strong>⚠️ Why It Matters</strong>
+            <p>Revenue cycle data will stop flowing into IES until the PMS integration is rebuilt. This must be scoped and scheduled before migration to avoid a gap in revenue reporting on Day 1.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-card">
+      <div class="q-hdr" onclick="toggleQ(this)">
+        <div class="q-num" style="background:#065A82">2</div>
+        <div class="q-main">
+          <div class="q-text">Do you track revenue separately by payer type (insurance vs. private pay)?</div>
+          <div class="q-layer2">↳ Layer 2: Do you currently split revenue across multiple income accounts by payer or procedure type?</div>
+        </div>
+        <div class="q-chevron">▾</div>
+      </div>
+      <div class="q-body">
+        <div class="q-body-inner">
+          <div class="q-col feat">
+            <strong>📋 Feature &amp; Migration Details</strong>
+            <div class="risk-tag risk-partial">⚠ Manual Rebuild Required</div>
+            <p><strong>Payer Dimensions:</strong> Revenue categorization by payer type must be reconfigured in IES using Dimensions (e.g., Insurance vs. Private Pay per clinic). Existing account structures migrate but tracking logic must be rebuilt.</p>
+          </div>
+          <div class="q-col why">
+            <strong>⚠️ Why It Matters</strong>
+            <p>Without correct payer dimensions, the practice cannot identify which procedures or payer types drive profitability — a critical metric for healthcare financial management.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-card">
+      <div class="q-hdr" onclick="toggleQ(this)">
+        <div class="q-num" style="background:#065A82">3</div>
+        <div class="q-main">
+          <div class="q-text">Do you operate multiple clinic locations that share costs (e.g., medical supplies, admin staff)?</div>
+          <div class="q-layer2">↳ Layer 2: Do you currently use manual journal entries to split shared costs across locations?</div>
+        </div>
+        <div class="q-chevron">▾</div>
+      </div>
+      <div class="q-body">
+        <div class="q-body-inner">
+          <div class="q-col feat">
+            <strong>📋 Feature &amp; Migration Details</strong>
+            <div class="risk-tag risk-no">✗ Manual JEs Do Not Move</div>
+            <p><strong>Cost Allocations:</strong> Manual allocation journal entries migrate as historical transactions but allocation <em>logic</em> does not. Cost allocation rules must be rebuilt in IES using AI Expense Agents.</p>
+          </div>
+          <div class="q-col why">
+            <strong>⚠️ Why It Matters</strong>
+            <p>Practices doing manual month-end math to split shared costs will need to re-establish this workflow in IES. The good news: IES can automate this going forward using revenue or asset % allocation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q-card">
+      <div class="q-hdr" onclick="toggleQ(this)">
+        <div class="q-num" style="background:#065A82">4</div>
+        <div class="q-main">
+          <div class="q-text">Do you store or reference any patient health information (PHI) within QuickBooks?</div>
+          <div class="q-layer2">↳ Layer 2: Do any third-party tools connected to QuickBooks process or transmit PHI?</div>
+        </div>
+        <div class="q-chevron">▾</div>
+      </div>
+      <div class="q-body">
+        <div class="q-body-inner">
+          <div class="q-col feat">
+            <strong>📋 Feature &amp; Migration Details</strong>
+            <div class="risk-tag risk-partial">⚠ Compliance Review Needed</div>
+            <p><strong>HIPAA &amp; PHI:</strong> IES is designed to integrate with HIPAA-compliant apps while keeping PHI separate from the general ledger. Any PHI stored in custom fields or notes within QuickBooks should be reviewed before migration.</p>
+          </div>
+          <div class="q-col why">
+            <strong>⚠️ Why It Matters</strong>
+            <p>Ensuring clear separation between clinical data (PMS) and financial data (IES) is critical for HIPAA compliance. A compliance review pre-migration prevents accidental PHI exposure during the transition.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q-card">
+      <div class="q-hdr" onclick="toggleQ(this)">
+        <div class="q-num" style="background:#065A82">5</div>
+        <div class="q-main">
+          <div class="q-text">Do you utilize Memorized Reports for monthly financial reporting across locations? <span style="font-size:11px;background:#DBEAFE;color:#1E40AF;padding:1px 6px;border-radius:10px;margin-left:6px;">All Industries</span></div>
+          <div class="q-layer2">↳ Layer 2: Do you have past reconciliation reports saved for compliance records?</div>
+        </div>
+        <div class="q-chevron">▾</div>
+      </div>
+      <div class="q-body">
+        <div class="q-body-inner">
+          <div class="q-col feat">
+            <strong>📋 Feature &amp; Migration Details</strong>
+            <div class="risk-tag risk-no">✗ Does Not Move</div>
+            <p><strong>Memorized &amp; Recon Reports:</strong> Memorized reports do not move. Past reconciliation reports do not transfer to the new system.</p>
+          </div>
+          <div class="q-col why">
+            <strong>⚠️ Why It Matters</strong>
+            <p>Healthcare practices require detailed monthly financials per location for management review. All reporting packages must be rebuilt in IES. Save reconciliation reports externally as PDFs before migration.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- IES UPGRADE: HEALTHCARE -->
+    <div class="ies-upgrade">
+      <div class="ies-upgrade-hdr">🚀 QB Desktop → IES: What Changes for Healthcare</div>
+      <div class="ies-tbl-wrap">
+        <table class="ies-tbl">
+          <thead>
+            <tr>
+              <th>Feature Area</th>
+              <th>📤 QB Desktop (From)</th>
+              <th>✅ IES (To)</th>
+              <th>💡 Strategic Outcome</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Revenue Cycle Visibility</td>
+              <td class="from-col">Summary Entries: Month-end journal entries lump all revenue together from Practice Management Software (PMS).</td>
+              <td class="to-col">Dimensional Revenue Cycle: API integration tracks revenue by Payer Dimension (Insurance vs. Private Pay) per clinic location.</td>
+              <td class="outcome-col">Performance: Identify exactly which procedures or payer types are driving practice profitability.</td>
+            </tr>
+            <tr>
+              <td>Shared Cost Allocation</td>
+              <td class="from-col">Shared Cost Confusion: Manual journal entries required to split shared costs (e.g., medical supplies) across multiple clinics each month.</td>
+              <td class="to-col">Automated Allocations: AI Expense Agents allocate shared costs dynamically based on revenue or asset % across entities.</td>
+              <td class="outcome-col">Accuracy: True "Net Income" per clinic location without manual month-end math.</td>
+            </tr>
+            <tr>
+              <td>Data Safety &amp; Compliance</td>
+              <td class="from-col">Local Server Risks: Patient data privacy relies on local server security — single point of failure for both financial and clinical data.</td>
+              <td class="to-col">HIPAA Awareness: IES integrates securely with HIPAA-compliant apps, keeping PHI separate from GL data.</td>
+              <td class="outcome-col">Compliance: Clear separation of duties between clinical data (PMS) and financial data (IES).</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="disclaimer">These questions do not determine if the customer should move to IES/QBOAV — the purpose is to surface potential roadblocks and set clear expectations.</div>
+  </div>
+
+  <!-- RESOURCES -->
+  <div id="resources" class="section">
+    <div class="sec-title">⚡ Migration Resources</div>
+    <div class="sec-sub">Key tools and articles for the migration process.</div>
+    <div class="res-grid">
+      <a class="res-card" href="https://qbo-dtm.app.intuit.com/app/qbo-dtm-ui/dtm/qbdtprofilertool" target="_blank">
+        <span class="res-icon">🔍</span>
+        <div><div class="res-title">QBDT Profiler Tool</div><div class="res-desc">Analyze the Desktop file before migration</div></div>
+      </a>
+      <a class="res-card" href="https://notebooklm.google.com/notebook/dade5063-a87d-436a-8164-dce001d52625" target="_blank">
+        <span class="res-icon">📓</span>
+        <div><div class="res-title">Migration NotebookLM</div><div class="res-desc">AI-powered migration knowledge base</div></div>
+      </a>
+      <a class="res-card" href="https://intuit.seismic.com/Link/Content/DC4QfTj4b9PhVGFVPD4bB42QTbgd" target="_blank">
+        <span class="res-icon">📄</span>
+        <div><div class="res-title">Desktop Migration Service Description Guide</div><div class="res-desc">Full service description for customers</div></div>
+      </a>
+      <a class="res-card" href="https://quickbooks.intuit.com/learn-support/en-us/help-article/convert-files/converting-quickbooks-desktop-windows-mac-online/L6QYzKBOV_US_en_US" target="_blank">
+        <span class="res-icon">✅</span>
+        <div><div class="res-title">What to Do After Migration</div><div class="res-desc">Post-migration next steps for QBO</div></div>
+      </a>
+      <a class="res-card" href="https://quickbooks.intuit.com/learn-support/en-us/help-article/import-export-data-files/expect-switch-quickbooks-desktop-quickbooks-online/L0dEyNosU_US_en_US" target="_blank">
+        <span class="res-icon">📦</span>
+        <div><div class="res-title">How Features & Data Transfer</div><div class="res-desc">Learn what moves from Desktop to Online</div></div>
+      </a>
+      <a class="res-card" href="https://quickbooks.intuit.com/learn-support/en-us/help-article/accounting-bookkeeping/learn-converting-quickbooks-desktop-quickbooks/L8TAphzFD_US_en_US" target="_blank">
+        <span class="res-icon">🔄</span>
+        <div><div class="res-title">Switching from Desktop to QBO</div><div class="res-desc">Overview of the switching process</div></div>
+      </a>
+      <a class="res-card" href="https://intuit.seismic.com/Link/Content/DCHP6HVG2h3c7GMD9qRqhWCXfBTG" target="_blank">
+        <span class="res-icon">🔒</span>
+        <div><div class="res-title">QB Desktop Migration Expectations</div><div class="res-desc">Internal only — detailed expectations guide</div></div>
+      </a>
+    </div>
+  </div>
+
+</main>
+</div>
+
+<script>
+  function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+
+  function navTo(id, el) {
+    const t = document.getElementById(id);
+    if (!t) return;
+    t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+    if (el) el.classList.add('active');
+    if (window.innerWidth <= 800) document.getElementById('sidebar').classList.remove('open');
+  }
+
+  const sectionIds = ['overview','construction','c-migrate','c-roles','c-day1','product','p-features','nonprofit','proserv','healthcare','resources'];
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    sectionIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && window.scrollY >= el.offsetTop - 90) cur = id;
+    });
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.toggle('active', l.getAttribute('data-s') === cur));
+  });
+
+  function toggleQ(hdr) {
+    const body = hdr.nextElementSibling;
+    const open = hdr.classList.contains('open');
+    hdr.classList.toggle('open', !open);
+    body.classList.toggle('open', !open);
+  }
+
+  function togglePunch(item) { item.classList.toggle('done'); }
+
+  // Feature table filter
+  let activeFilter = 'all';
+  function setFilter(f, btn) {
+    activeFilter = f;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFeatFilter();
+  }
+  function filterFeats() { applyFeatFilter(); }
+  function applyFeatFilter() {
+    const q = document.getElementById('feat-search').value.toLowerCase();
+    document.querySelectorAll('#feat-body tr').forEach(row => {
+      if (row.classList.contains('cat-row')) { row.style.display = ''; return; }
+      const text = row.textContent.toLowerCase();
+      const status = row.getAttribute('data-status') || '';
+      const matchQ = !q || text.includes(q);
+      const matchF = activeFilter === 'all' || status === activeFilter;
+      row.style.display = (matchQ && matchF) ? '' : 'none';
+    });
+    // Hide category rows if all children hidden
+    document.querySelectorAll('#feat-body tr.cat-row').forEach(cat => {
+      let next = cat.nextElementSibling;
+      let hasVisible = false;
+      while (next && !next.classList.contains('cat-row')) {
+        if (next.style.display !== 'none') hasVisible = true;
+        next = next.nextElementSibling;
+      }
+      cat.style.display = hasVisible ? '' : 'none';
+    });
+  }
+</script>
+</body>
+</html>
